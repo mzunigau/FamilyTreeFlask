@@ -38,3 +38,6 @@ class Padres(db.Model):
             "id_padre": self.id_padre,
             # do not serialize the password, its a security breach
         }
+
+    def newRelation(relation):
+        return serialize(relation)

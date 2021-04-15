@@ -34,12 +34,13 @@ def sitemap():
 def getAllbyAge():
     #  Retorna los miembros ordenados por edad
     personas = Persona.getAllbyAge()
-    #Persona.query.order_by(Persona.age.desc()).all()
-    print(personas)
     return jsonify(personas), 200
 
 @app.route('/member/<int:id>', methods=['GET'])
 def getMember(id):
+    #The API must expose an endpoint that returns a 
+    #specific member of the family tree by their 
+    #id (which should be unique) and the information about its children and parents.
     padres = Padres.query.filter_by(id_hijo=id)
     return jsonify(serialize(user)), 200      
 
@@ -47,9 +48,10 @@ def getMember(id):
 def crearRelacion():
     body = request.get_json() # get the request body content
     nuevaRelacion = Padres(id_padre=body['id_padre'], id_hijo=body['id_hijo'])
+    print(body)
     db.session.add(nuevaRelacion)
     db.session.commit()
-    return jsonify(serialize(nuevaRelacion)), 200    
+    return jsonify(newRelation(nuevaRelacion)), 200    
 
 
 # this only runs if `$ python src/main.py` is executed
