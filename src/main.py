@@ -8,7 +8,7 @@ from flask_swagger import swagger
 from flask_cors import CORS
 from utils import APIException, generate_sitemap
 from admin import setup_admin
-from models import db, Person
+from models import db, Person, Padres, Hijos
 #from models import Person
 
 app = Flask(__name__)
@@ -44,7 +44,13 @@ def getMember(id):
     #padres = Padres.query.filter_by(id_hijo=id)
     return "OK", 200      
 
-
+@app.route('/padres', methods=['POST'])
+def crearPadre():
+    body = request.get_json() # get the request body content
+    padre = Padre(parent_id=body['parent_id'], child_id=body['child_id'])
+    db.session.add(padre)
+    db.session.commit()
+    return jsonify(serialize(padre)), 200    
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':
