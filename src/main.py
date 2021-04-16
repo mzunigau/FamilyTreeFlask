@@ -8,7 +8,7 @@ from flask_swagger import swagger
 from flask_cors import CORS
 from utils import APIException, generate_sitemap
 from admin import setup_admin
-from models import db, Persona, Padres
+from models import db, Person
 #from models import Person
 
 app = Flask(__name__)
@@ -33,25 +33,17 @@ def sitemap():
 @app.route('/all', methods=['GET'])
 def getAllbyAge():
     #  Retorna los miembros ordenados por edad
-    personas = Persona.getAllbyAge()
-    return jsonify(personas), 200
+    persons = Person.getAllbyAge()
+    return jsonify(persons), 200
 
 @app.route('/member/<int:id>', methods=['GET'])
 def getMember(id):
     #The API must expose an endpoint that returns a 
     #specific member of the family tree by their 
     #id (which should be unique) and the information about its children and parents.
-    padres = Padres.query.filter_by(id_hijo=id)
-    return jsonify(serialize(user)), 200      
+    #padres = Padres.query.filter_by(id_hijo=id)
+    return "OK", 200      
 
-@app.route('/persona/relacion', methods=['POST'])
-def crearRelacion():
-    body = request.get_json() # get the request body content
-    nuevaRelacion = Padres(id_padre=body['id_padre'], id_hijo=body['id_hijo'])
-    print(body)
-    db.session.add(nuevaRelacion)
-    db.session.commit()
-    return jsonify(newRelation(nuevaRelacion)), 200    
 
 
 # this only runs if `$ python src/main.py` is executed
